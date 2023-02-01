@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./airbnb/navbar/Navbar";
+import Home from "./airbnb/Home";
+import Register from "./airbnb/forms/Register";
+import WishListPage from "./airbnb/wishlist/WishListPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./airbnb/forms/Login";
+import TestMaps from "./airbnb/maps/TestMaps";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<>
+			<BrowserRouter>
+				<Navbar />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/signup" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/wishlist" element={<WishListPage />} />
+					{/* Test Map Routes */}
+					<Route path="/map" element={<TestMaps />} />
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
 }
 
 export default App;
