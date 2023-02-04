@@ -5,6 +5,7 @@ import PopUpForm from "../popupForm/PopUpForm";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { postHotels } from "../../redux/slices/hotelSlice";
+import { apiHeader } from "../../services/authHeader";
 const MobileNavbar = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useDispatch();
@@ -12,8 +13,6 @@ const MobileNavbar = () => {
 	const [city, setcity] = useState();
 	const [dateRange, setdateRange] = useState();
 	const [persons, setpersons] = useState(1);
-	console.log(dateRange, city);
-	const query = `http://test.hotelkey.pk/api/check-availibility?city=${city}&daterange=${dateRange}&adult=${persons}`;
 	////// Modal Click Handler
 	const modalClickHandler = async () => {
 		console.log(dateRange, city);
@@ -21,8 +20,16 @@ const MobileNavbar = () => {
 			console.log("error");
 			return;
 		}
+		const formData = new FormData();
+		formData.append("city", city);
+		formData.append("daterange", dateRange);
+		formData.append("adult", persons);
 		try {
-			const { data, status } = await axios.get(query);
+			const { data, status } = await axios.post(
+				"https://test.hotelkey.pk/api/search",
+				formData,
+				apiHeader
+			);
 			if (status === 200) {
 				dispatch(postHotels(data.data));
 				setIsModalOpen(false);

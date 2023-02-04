@@ -16,7 +16,6 @@ const MappingOfCards = () => {
 			dispatch(postHotels(data.data));
 		}
 	};
-
 	useEffect(() => {
 		getHotels();
 	}, []);

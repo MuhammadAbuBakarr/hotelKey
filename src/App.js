@@ -4,8 +4,7 @@ import Register from "./airbnb/forms/Register";
 import WishListPage from "./airbnb/wishlist/WishListPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./airbnb/forms/Login";
-import TestMaps from "./airbnb/maps/TestMaps";
-
+import HotelPage from "./airbnb/hotelPage/HotelPage";
 function App() {
 	return (
 		<>
@@ -16,8 +15,7 @@ function App() {
 					<Route path="/signup" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/wishlist" element={<WishListPage />} />
-					{/* Test Map Routes */}
-					<Route path="/map" element={<TestMaps />} />
+					<Route path="/hotel/:id" element={<HotelPage />} />
 				</Routes>
 			</BrowserRouter>
 		</>

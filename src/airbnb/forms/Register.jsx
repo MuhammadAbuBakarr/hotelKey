@@ -1,10 +1,43 @@
 import React from "react";
 import { Form, Input, InputNumber } from "antd";
+import { apiHeader } from "../../services/authHeader";
+import axios from "axios";
 const Register = () => {
 	const [form] = Form.useForm();
-	const postForm = (values) => {
+	const postForm = async (values) => {
 		console.log(values);
 		// form.resetFields();
+		try {
+			const formData = new FormData();
+			formData.append("email", values.email);
+			formData.append("password", values.password);
+			formData.append("repassword", values.repassword);
+			formData.append("name", values.name);
+			formData.append("number", values.number);
+
+			const { data, status } = await axios.post(
+				"https://test.hotelkey.pk/api/user-signup",
+				formData,
+				apiHeader
+			);
+			if (status === 200) {
+				console.log(data);
+			}
+		} catch (e) {
+			console.log(e.response.data.message);
+		}
+	};
+	//// Number Validation
+	const numberValidation = async (rule, value) => {
+		if (!value) {
+			return Promise.reject(new Error("Please Enter Your Phone Number "));
+		}
+		console.log(value);
+		const count = value.toString();
+
+		if (count.length < 11) {
+			return Promise.reject(new Error("Number Length must be 11"));
+		}
 	};
 
 	return (
@@ -48,15 +81,11 @@ const Register = () => {
 							<Input placeholder="Enter Your Name" />
 						</Form.Item>
 						<Form.Item
+							hasFeedback
 							name="number"
 							rules={[
 								{
-									type: "number",
-									message: "This is not a valid Number",
-								},
-								{
-									required: true,
-									message: "Please Enter your Phone Number",
+									validator: numberValidation,
 								},
 							]}
 						>
