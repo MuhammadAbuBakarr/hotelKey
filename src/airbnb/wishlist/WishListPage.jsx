@@ -1,7 +1,6 @@
 import React from "react";
 import EmptyWishList from "./EmptyWishList";
 import CardWishList from "./CardWishList";
-import { getToken } from "../../services/token";
 const WishListPage = () => {
 	const arr = [];
 	const WishListRender = () => {

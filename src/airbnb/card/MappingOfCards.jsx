@@ -9,7 +9,7 @@ const MappingOfCards = () => {
 	const dispatch = useDispatch();
 	const getHotels = async () => {
 		const { data, status } = await axios.get(
-			"https://hotelkey.pk/api/home",
+			"https://test.hotelkey.pk/api/get-list",
 			apiHeader
 		);
 		if (status === 200) {

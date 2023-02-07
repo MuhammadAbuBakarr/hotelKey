@@ -9,7 +9,7 @@ const WishListIcon = ({ props }) => {
 	const [checkWish, setcheckWish] = useState(false);
 
 	const toggleList = () => {
-		if (Object.keys(user).length === 0) {
+		if (!user) {
 			messageApi.open({
 				type: "warning",
 				content: "Please Login First",

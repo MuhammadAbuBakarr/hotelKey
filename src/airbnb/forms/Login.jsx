@@ -4,32 +4,32 @@ import { Form, Input } from "antd";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { apiHeader } from "../../services/authHeader";
-import { saveToken, getToken } from "../../services/token";
 import { getUserByToken } from "../../services/getUserByToken";
 import { useDispatch } from "react-redux";
 import { savelogin } from "../../redux/slices/userSlice";
+import { useCookies } from "react-cookie";
 const Login = () => {
 	const dispatch = useDispatch();
-	const token = getToken("token");
 	const nav = useNavigate();
+	const [cookies, setCookie, removeToken] = useCookies(["user"]);
 	const [messageApi, contextHolder] = message.useMessage();
 	const [form] = Form.useForm();
-
 	///// {email: 'ahadimran720@gmail.com', password: 'ahad1234'}
 	const postForm = async (values) => {
 		try {
-			console.log(values);
 			const formData = new FormData();
 			formData.append("email", values.email);
 			formData.append("password", values.password);
 			const { status, data } = await axios.post(
-				"https://hotelkey.pk/api/user-authentication",
+				"https://test.hotelkey.pk/api/user-login",
 				formData,
 				apiHeader
 			);
 
 			if (status === 200) {
+				setCookie("user", data.token);
 				const user = await getUserByToken(data.token);
+				console.log(user);
 				if (user) {
 					dispatch(savelogin(user));
 					form.resetFields();

@@ -2,7 +2,8 @@ import React from "react";
 import { Dropdown } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { auth, myUser, logout } from "../../redux/slices/userSlice";
+import { logout } from "../../redux/slices/userSlice";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
@@ -16,9 +17,10 @@ import {
 } from "@ant-design/icons";
 const ProfileMenu = () => {
 	const dispatch = useDispatch();
-	const loggedUser = useSelector((s) => s.user.user);
+	const user = useSelector((s) => s.user.user);
 	const userAuth = useSelector((s) => s.user.auth);
 	const nav = useNavigate();
+	const [cookies, setCookie, removeToken] = useCookies(["user"]);
 	const noUserItems = [
 		{
 			key: "/signup",
@@ -69,16 +71,21 @@ const ProfileMenu = () => {
 		},
 	];
 	const itemsUser = () => {
-		if (Object.keys(loggedUser).length === 0) {
+		if (!user) {
 			return noUserItems;
 		} else return UserItems;
 	};
 	const logOut = async () => {
 		console.log("Logout User");
-		const { data, status } = await axios.get("https://hotelkey.pk/api/logout", {
-			headers: userAuth,
-		});
+		const { data, status } = await axios.post(
+			"https://test.hotelkey.pk/api/user-logout",
+			{},
+			{
+				headers: userAuth,
+			}
+		);
 		if (status === 200) {
+			removeToken(["user"]);
 			dispatch(logout());
 		}
 	};

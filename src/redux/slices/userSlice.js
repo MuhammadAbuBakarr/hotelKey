@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiKey } from "../../services/authHeader";
 const initialState = {
-	user: {},
+	user: null,
 	auth: {},
 };
 
@@ -14,13 +14,11 @@ export const loginSlice = createSlice({
 			state.auth = { ...apiKey, token: payload.token };
 		},
 		logout: (state, { payload }) => {
-			state.user = {};
-			state.auth = {};
+			state.user = null;
+			state.auth = null;
 		},
 	},
 });
 
-// export const myUser = (s) => s.loginReducer.user;
-// export const auth = (s) => s.loginReducer.auth;
 export const { savelogin, logout } = loginSlice.actions;
 export default loginSlice.reducer;

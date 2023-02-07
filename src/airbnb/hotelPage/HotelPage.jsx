@@ -10,27 +10,45 @@ import { useEffect } from "react";
 import axios from "axios";
 import { apiHeader } from "../../services/authHeader";
 import { useState } from "react";
+import RoomCard from "./rooms/RoomCard";
 const HotelPage = () => {
 	const [hotel, sethotel] = useState([]);
+	const [rooms, setrooms] = useState([]);
 	const [images, setimages] = useState([]);
-
+	// Getting Id of Hotel/Room
 	const { id } = useParams();
-	const imagesArr = [
-		"https://hotelkey.pk/uploads/residencies/profile2/thumbnail-1675238823IMG-20230119-WA0001.jpg",
-		"https://hotelkey.pk/uploads/residencies/profile2/thumbnail-1675238823IMG-20230119-WA0001.jpg",
-		"https://hotelkey.pk/uploads/residencies/profile2/thumbnail-1675238823IMG-20230119-WA0001.jpg",
-		"https://hotelkey.pk/uploads/residencies/profile2/thumbnail-1675238822IMG-20230119-WA00011.jpg",
-		"https://hotelkey.pk/uploads/residencies/profile2/thumbnail-1675238822IMG-20230119-WA0002.jpg",
-	];
+	const hotelCredentials = id.split("-");
+	/// Conditionally Making Api of Hotel/Residence
+	const apiUrl = () => {
+		if (hotelCredentials[1] === "1") {
+			return `https://test.hotelkey.pk/api/get-hotel/${btoa(
+				hotelCredentials[0]
+			)}`;
+		} else {
+			return `https://test.hotelkey.pk/api/get-residence/${btoa(
+				hotelCredentials[0]
+			)}`;
+		}
+	};
+	/// Rendering Rooms
+
+	const MappingRoom = () => {
+		if (rooms.length > 0) {
+			return rooms.map((e, i) => <RoomCard key={i} props={e} />);
+		}
+	};
+
+	/// Calling Api
 	const getHotel = async () => {
 		try {
-			const { data, status } = await axios.get(
-				`https://test.hotelkey.pk/api/get-residence/${id}`,
-				apiHeader
-			);
+			const { data, status } = await axios.get(apiUrl(), apiHeader);
+
 			if (status === 200) {
 				sethotel(data.data);
-				setimages(data.images);
+				setimages(data.image);
+				if (data.room) {
+					setrooms(data.room);
+				}
 			}
 		} catch (e) {
 			console.log(e);
@@ -83,12 +101,32 @@ const HotelPage = () => {
 						/>
 					</div>
 				</div>
+				{/* Hotel Rooms Card */}
+				{hotelCredentials[1] === "1" ? (
+					<div className="text-3xl p-10 font-semibold text-center">
+						Hotel Rooms
+					</div>
+				) : (
+					<></>
+				)}
+
+				<div className="flex gap-8 justify-center items-center flex-wrap">
+					<MappingRoom />
+				</div>
 				{/* Booking Section */}
 				<div className="mt-20  w-full flex justify-center flex-col items-center">
-					<div className="text-3xl p-3 font-bold">Booking Details</div>
-
-					<BookingSection price={hotel.price} />
+					{rooms.length === 0 ? (
+						<>
+							<div className="text-3xl p-3 font-bold">Booking Details</div>
+							<BookingSection price={hotel.price} />
+						</>
+					) : (
+						<></>
+					)}
 				</div>
+				{/* Map Section */}
+				<div className="text-3xl font-bold p-4">Hotel Location</div>
+				<HotelMap lat={hotel.latitude} lon={hotel.longitude} />
 				{/* Reviews Section */}
 				<div className="mt-10">
 					<div className="text-3xl grid place-items-center font-bold">
@@ -98,9 +136,7 @@ const HotelPage = () => {
 						<ReviewMapping />
 					</div>
 				</div>
-				{/* Map Section */}
-				<div className="text-3xl font-bold p-4">Hotel Location</div>
-				<HotelMap lat={hotel.latitude} lon={hotel.longitude} />
+
 				<div className="mt-9"></div>
 			</div>
 		</>

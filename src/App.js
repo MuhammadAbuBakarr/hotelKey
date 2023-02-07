@@ -5,6 +5,7 @@ import WishListPage from "./airbnb/wishlist/WishListPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./airbnb/forms/Login";
 import HotelPage from "./airbnb/hotelPage/HotelPage";
+import RoomPage from "./airbnb/hotelPage/rooms/roomPage/RoomPage";
 function App() {
 	return (
 		<>
@@ -16,6 +17,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/wishlist" element={<WishListPage />} />
 					<Route path="/hotel/:id" element={<HotelPage />} />
+					<Route index path="/room/:id" element={<RoomPage />} />
 				</Routes>
 			</BrowserRouter>
 		</>
