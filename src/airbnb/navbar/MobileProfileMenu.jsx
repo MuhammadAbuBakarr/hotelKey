@@ -19,7 +19,7 @@ const MobileProfileMenu = () => {
 	const [cookies, setCookie, removeToken] = useCookies(["user"]);
 	const UserItems = [
 		{
-			key: "/kjashd",
+			key: "/dashboard",
 			label: (
 				<div className="font-medium flex items-center gap-x-2 text-base">
 					<SettingOutlined />

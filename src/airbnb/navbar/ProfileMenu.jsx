@@ -43,7 +43,7 @@ const ProfileMenu = () => {
 	];
 	const UserItems = [
 		{
-			key: "/kjashd",
+			key: "/dashboard",
 			label: (
 				<div className="font-medium flex items-center gap-x-2 text-base">
 					<SettingOutlined />
